@@ -1,7 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
-const jsdom = require("jsdom");
 
 const app = express();
 const { port, host } = require('./config.json');

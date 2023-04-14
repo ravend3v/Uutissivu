@@ -12,7 +12,6 @@ window.addEventListener('load', function() {
                 const date = new Date(item.pvm);
                 const formattedDate = date.toLocaleDateString('fi-FI', { timeZone: 'UTC' });
                 weatherHtml += `
-                  <h1>Viikon sää -viikko${item.vko}</h1>
                   <div class="day-box">
                     <div class="date">${formattedDate} </div>
                     <div class="temp">${item.lampotila}°C </div>
