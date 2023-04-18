@@ -10,8 +10,17 @@ const connection = mysql.createConnection({
     database: 'blogit'
 });
 
+//Set up CORS to allow us to accept requests from our client
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+
 //kysely tietokannalle
-const query = 'SELECT * FROM blogikirjoitus ORDER BY julkaisuaika DESC';
+const query = 'SELECT * FROM blogikirjoitus JOIN blogi ON blogikirjoitus.blogi_id = blogi.blogi_id ORDER BY julkaisuaika DESC';
 connection.query(query, (error, results) => {
     if (error) {
         console.log(error);
@@ -21,6 +30,8 @@ connection.query(query, (error, results) => {
     const result = results.map(result => {
       return {
         id: result.kirjoitus_id,
+        blogi: result.nimi,
+        kirjoittaja: result.kirjoittaja,
         otsikko: result.otsikko,
         teksti: result.teksti,
         julkaisuaika: result.julkaisuaika

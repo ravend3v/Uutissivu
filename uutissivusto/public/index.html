@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles.css" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="./index.js"></script>
   <title>Uutissivusto</title>
   </head>
@@ -20,16 +21,27 @@
       </div>  
       <div class="article-content">
         <div class="flex-container">
-          <div class="flex-child">
+          <div class="flex-child" id="post1">
             Flex Column 1
           </div>
 
-          <div class="flex-child">
+          <div class="flex-child" id="post2">
             Flex Column 2
           </div>
 
-          <div class="flex-child"> 
-            Flex Column 3
+          <div class="flex-child" > 
+            <div class="sivulaatikko-otsikko">
+              <h3>Otsikko</h3>
+            </div>
+            <div class="sivulaatikko-content">
+              <div id="uutiset"></div>
+            </div>
+            <div class="sivulaatikko-väliotsikko">
+              <h3>Väliotsikko</h3>
+            </div>
+            <div class="sivulaatikko-content">
+              <div id="tarinat"></div>
+            </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,6 @@ window.addEventListener('load', function() {
                 const date = new Date(item.pvm);
                 const formattedDate = date.toLocaleDateString('fi-FI', { timeZone: 'UTC' });
                 weatherHtml += `
-                  <h1>Viikon sää -viikko${item.vko}</h1>
                   <div class="day-box">
                     <div class="date">${formattedDate} </div>
                     <div class="temp">${item.lampotila}°C </div>
@@ -30,5 +29,24 @@ window.addEventListener('load', function() {
   }
 
 updateWeatherData();
-setInterval(updateWeatherData, 60000);
 });  
+
+fetch('http://localhost:8080/', {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  mode: 'cors'
+}).then(response => response.json()).then(data => {
+  console.log(data);
+
+  tarinatHtml1 = `
+    <div><h3>${data[0].blogi}</h3><p>${data[0].otsikko}</div>
+    <div><h3>${data[1].blogi}</h3><p>${data[1].otsikko}</div>
+    <div><h3>${data[2].blogi}</h3><p>${data[2].otsikko}</div>
+    
+    
+  `;
+  document.getElementById('tarinat').innerHTML = tarinatHtml1;
+  
+  
+});

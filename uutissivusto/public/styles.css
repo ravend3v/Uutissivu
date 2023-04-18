@@ -26,7 +26,7 @@ body {
 
 .flex-child {
     flex: 1;
-    border: 2px solid yellow;
+    border: 2px solid purple;
     padding: 20px;
 }
 
@@ -49,7 +49,7 @@ body {
     justify-content: center;
     width: 150px;
     height: 150px;
-    margin: 10px;
+    border: 2px solid #333;
 }
 
 .date {
@@ -69,4 +69,14 @@ body {
 
 .wind {
 font-size: 1em;
+}
+
+.sivulaatikko-otsikko {
+    background-color: purple;
+    padding: 10px;
+}
+
+.sivulaatikko-väliotsikko {
+    background-color: purple;
+    padding: 10px;
 }
