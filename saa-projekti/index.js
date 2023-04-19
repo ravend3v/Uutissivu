@@ -31,6 +31,7 @@ app.get('/saa/:vko', (req, res) => {
                 saatiedot: results.map(result => ( {
                   saatieto: [
                     {id: result.id},
+                    {vko: result.vko},
                     {pvm: result.pvm.toString()},
                     {saatila: result.saatila},
                     {lampotila: result.lampotila},

@@ -7,11 +7,25 @@ fetch('http://localhost:8081/saa/21', {
   .then(response => response.text())
   .then(data => {
     console.log(data);
-    
-    saaHtml = `
-      <div>${data[10]}</div>
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(data, 'text/xml');
+
+    const vko = xmlDoc.getElementsByTagName('vko')[0].childNodes[0].nodeValue;
+    const pvm = xmlDoc.getElementsByTagName('pvm')[0].childNodes[0].nodeValue;
+    const lampotila = xmlDoc.getElementsByTagName('lampotila')[0].childNodes[0].nodeValue;
+    const tuuli = xmlDoc.getElementsByTagName('tuulennopeus')[0].childNodes[0].nodeValue;
+    const saatila = xmlDoc.getElementsByTagName('saatila')[0].childNodes[0].nodeValue;
+
+    document.getElementById('saa').innerHTML = `
+      <div>
+        <h3>${pvm}</h3> <br> <h3>${lampotila}°C</h3> <br> <h3>Säätila:</h3> <p>${saatila}</p> <br> <h3>Tuulennopeus:</h3> <p>${tuuli}m/s</p>
+      </div>
     `;
-    document.getElementById('saa').innerHTML = saaHtml;
+
+    document.getElementById('vko').innerHTML = `
+      <h3>Viikon sää - viikko ${vko}</h3>
+    `;
+
   })
   .catch(error => {
     console.error(error);
