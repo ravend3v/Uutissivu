@@ -21,21 +21,21 @@ app.use((req, res, next) => {
 
 //kysely tietokannalle
 const query = 'SELECT * FROM blogikirjoitus JOIN blogi ON blogikirjoitus.blogi_id = blogi.blogi_id ORDER BY julkaisuaika DESC';
-connection.query(query, (error, results) => {
+connection.query(query, (error, vastaus) => {
     if (error) {
         console.log(error);
+        res.status(500);
     } 
-
     //taulukko JSON muotoon
-    const result = results.map(result => {
-      return {
-        id: result.kirjoitus_id,
-        blogi: result.nimi,
-        kirjoittaja: result.kirjoittaja,
-        otsikko: result.otsikko,
-        teksti: result.teksti,
-        julkaisuaika: result.julkaisuaika
-      };
+    const result = vastaus.map(result => {
+        return {
+            id: result.kirjoitus_id,
+            blogi: result.nimi,
+            kirjoittaja: result.kirjoittaja,
+            otsikko: result.otsikko,
+            teksti: result.teksti,
+            julkaisuaika: result.julkaisuaika
+        };
     });
     const json = JSON.stringify(result);
     
@@ -45,6 +45,7 @@ connection.query(query, (error, results) => {
     );
 });
 
+//Käynnistetään palvelin
 app.listen(port, host, () => {
     console.log(`Server running on http://${host}:${port}`);
 });

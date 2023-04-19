@@ -12,12 +12,20 @@ const connection = mysql.createConnection({
     database: 'saatiedot'
 });
 
+//Set up CORS to allow us to accept fetch requests from our client
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
 //Get the data based on the vko number from the database saa 
 app.get('/saa/:vko', (req, res) => {
     const vko = req.params.vko;
     connection.query('SELECT * FROM saa WHERE vko = ?', [vko], (error, results) => {
         if (error) {
-            res.status(500).send('Error');
+            res.status(500);
         } else {
             const xmlData = xml({ 
                 saatiedot: results.map(result => ( {
@@ -33,8 +41,9 @@ app.get('/saa/:vko', (req, res) => {
             res.type('application/xml');
             res.send(xmlData);
           }
-        });
-      });
+    });
+});
+
 app.listen(port, host, () => {
     console.log(`Server is running on port ${port}`);
 });

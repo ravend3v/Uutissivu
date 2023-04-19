@@ -1,26 +1,23 @@
 fetch('http://localhost:8081/saa/21', {
   headers: {
-    'Content-Type': 'application/xml',
+    'Content-Type': 'application/xml'
   },
   mode: 'cors'
-}).then(response => response.text()).then(data => {
-  const parser = new DOMParser();
-  const xml = parser.parseFromString(data, 'application/xml');
-  const saatiedot = xml.getElementsByTagName('saatieto');
-  let saatiedotHtml = '';
-  for (let i = 0; i < saatiedot.length; i++) {
-    saatiedotHtml += `
-      <div>
-        <h3>${saatiedot[i].getElementsByTagName('pvm')[0].textContent}</h3>
-        <p>${saatiedot[i].getElementsByTagName('saatila')[0].textContent}</p>
-        <p>${saatiedot[i].getElementsByTagName('lampotila')[0].textContent}</p>
-        <p>${saatiedot[i].getElementsByTagName('tuulennopeus')[0].textContent}</p>
-      </div>
+})
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+    
+    saaHtml = `
+      <div>${data[10]}</div>
     `;
-  }
-  document.getElementById('saatiedot').innerHTML = saatiedotHtml;
-});
+    document.getElementById('saa').innerHTML = saaHtml;
+  })
+  .catch(error => {
+    console.error(error);
+  });
 
+//Pyydetään blogit blogi palvelimelta
 fetch('http://localhost:8080/', {
   headers: {
     'Content-Type': 'application/json',
@@ -36,6 +33,7 @@ fetch('http://localhost:8080/', {
   document.getElementById('tarinat').innerHTML = tarinatHtml1;
 });
 
+//Pyydetään uutiset omalta palvelimelta
 fetch('/news', {
   mode: 'cors'
 }).then(response => response.json()).then(data => {
