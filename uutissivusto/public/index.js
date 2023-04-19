@@ -11,7 +11,7 @@ fetch('http://localhost:8081/saa/21', {
     const xmlDoc = parser.parseFromString(data, 'text/xml');
 
     const vko = xmlDoc.getElementsByTagName('vko')[0].childNodes[0].nodeValue;
-    const pvm = xmlDoc.getElementsByTagName('pvm')[0].childNodes[0].nodeValue;
+    const pvm = new Date(xmlDoc.getElementsByTagName('pvm')[0].childNodes[0].nodeValue).toLocaleDateString('fi-FI');
     const lampotila = xmlDoc.getElementsByTagName('lampotila')[0].childNodes[0].nodeValue;
     const tuuli = xmlDoc.getElementsByTagName('tuulennopeus')[0].childNodes[0].nodeValue;
     const saatila = xmlDoc.getElementsByTagName('saatila')[0].childNodes[0].nodeValue;
