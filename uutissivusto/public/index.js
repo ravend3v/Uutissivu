@@ -6,7 +6,9 @@ fetch('http://localhost:8081/saa/21', {
 })
   .then(response => response.text())
   .then(data => {
+
     console.log(data);
+
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(data, 'text/xml');
 
