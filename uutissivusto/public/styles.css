@@ -86,3 +86,12 @@ font-size: 1em;
     background-color: purple;
     padding: 10px;
 }
+
+.uusimmat {
+    border-bottom: 1px solid purple;
+}
+
+
+.tarinat {
+    display: inline-block;
+}

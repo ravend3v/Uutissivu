@@ -1,35 +1,25 @@
-window.addEventListener('load', function() {
-  const weatherDataDiv = document.getElementById('weather-data');
-
-  function updateWeatherData() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/weather');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const weatherData = JSON.parse(xhr.responseText);
-            let weatherHtml = '';
-            weatherData.forEach(function(item) {
-                const date = new Date(item.pvm);
-                const formattedDate = date.toLocaleDateString('fi-FI', { timeZone: 'UTC' });
-                weatherHtml += `
-                  <div class="day-box">
-                    <div class="date">${formattedDate} </div>
-                    <div class="temp">${item.lampotila}°C </div>
-                    <h2>Säätila:</h2>
-                    <div class="conditions">${item.saatila} </div>
-                    Tuulen nopeus:
-                    <div class="wind">${item.tuulennopeus} m/s </div>
-                  </div>
-                `;
-            });
-            weatherDataDiv.innerHTML = weatherHtml;
-        }
-    }
-    xhr.send();
+fetch('http://localhost:8081/saa/21', {
+  headers: {
+    'Content-Type': 'application/xml',
+  },
+  mode: 'cors'
+}).then(response => response.text()).then(data => {
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(data, 'application/xml');
+  const saatiedot = xml.getElementsByTagName('saatieto');
+  let saatiedotHtml = '';
+  for (let i = 0; i < saatiedot.length; i++) {
+    saatiedotHtml += `
+      <div>
+        <h3>${saatiedot[i].getElementsByTagName('pvm')[0].textContent}</h3>
+        <p>${saatiedot[i].getElementsByTagName('saatila')[0].textContent}</p>
+        <p>${saatiedot[i].getElementsByTagName('lampotila')[0].textContent}</p>
+        <p>${saatiedot[i].getElementsByTagName('tuulennopeus')[0].textContent}</p>
+      </div>
+    `;
   }
-
-updateWeatherData();
-});  
+  document.getElementById('saatiedot').innerHTML = saatiedotHtml;
+});
 
 fetch('http://localhost:8080/', {
   headers: {
@@ -37,16 +27,34 @@ fetch('http://localhost:8080/', {
   },
   mode: 'cors'
 }).then(response => response.json()).then(data => {
-  console.log(data);
 
   tarinatHtml1 = `
-    <div><h3>${data[0].blogi}</h3><p>${data[0].otsikko}</div>
-    <div><h3>${data[1].blogi}</h3><p>${data[1].otsikko}</div>
-    <div><h3>${data[2].blogi}</h3><p>${data[2].otsikko}</div>
-    
-    
+    <div><h3>${data[0].blogi}:</h3>${data[0].otsikko} <br> ${data[0].kirjoittaja}</div>
+    <div><h3>${data[1].blogi}:</h3>${data[1].otsikko} <br> ${data[1].kirjoittaja}</div>
+    <div><h3>${data[2].blogi}:</h3>${data[2].otsikko} <br> ${data[2].kirjoittaja}</div>
   `;
   document.getElementById('tarinat').innerHTML = tarinatHtml1;
-  
-  
 });
+
+fetch('/news', {
+  mode: 'cors'
+}).then(response => response.json()).then(data => {
+
+  uutisetHtml1 = `
+    <div><h3>${data[0].otsikko}</h3><p>${data[0].julkaisuaika} || ${data[0].kirjoittaja}</p><p>${data[0].sisalto}</p></div>
+  `;
+  uutisetHtml2 = `
+    <div><h3>${data[1].otsikko}</h3><p>${data[0].julkaisuaika} || ${data[1].kirjoittaja} ${data[1].sisalto}</p></div>
+  `;
+
+  uusimmatHtml = `
+    <div><h3>${data[0].otsikko}</h3><p>${data[0].julkaisuaika}</p></div>
+    <div><h3>${data[1].otsikko}</h3><p>${data[1].julkaisuaika}</p></div>
+    <div><h3>${data[2].otsikko}</h3><p>${data[3].julkaisuaika}</p></div>
+    <div><h3>${data[4].otsikko}</h3><p>${data[4].julkaisuaika}</p></div>
+  `
+
+  document.getElementById('uutiset1').innerHTML = uutisetHtml1;
+  document.getElementById('uutiset2').innerHTML = uutisetHtml2;
+  document.getElementById('uusimmat-uutiset').innerHTML = uusimmatHtml;
+})
