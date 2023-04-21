@@ -1,97 +1,9 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
 }
 
 .header {
-    background-color: #333;
-    padding: 20px 0;
-    border-bottom: 1px solid #333;
+    background-color: #ffcccc;
     text-align: center;
-}
-
-.article-content {
-    background-color: #fff;
-}
-
-.flex-container {
-    display: flex;
-}
-
-.flex-child {
-    flex: 1;
-    border: 2px solid purple;
-    padding: 20px;
-}
-
-.flex-child:first-child {
-    margin-right: 20px;
-}
-
-.flex-child:last-child {
-    margin-left: 20px;
-}
-
-.weather-content {
-    background-color: #fff;
-    border: 2px solid #333;
-}
-
-.weather-header {
-    background-color: #fff;
-    color: black;
-    border: 2px solid #333;
-}
-
-.day-box {
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-    height: 150px;
-    border: 2px solid #333;
-}
-
-.date {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.temp {
-    font-size: 1.5rem;
-    margin: 5px 0;
-}
-
-.conditions {
-    font-size: 1.2em;
-    margin-bottom: 5px;
-}
-
-.wind {
-font-size: 1em;
-}
-
-.sivulaatikko-otsikko {
-    background-color: purple;
-    padding: 10px;
-}
-
-.sivulaatikko-väliotsikko {
-    background-color: purple;
-    padding: 10px;
-}
-
-.uusimmat {
-    border-bottom: 1px solid purple;
-}
-
-
-.tarinat {
-    display: inline-block;
 }
