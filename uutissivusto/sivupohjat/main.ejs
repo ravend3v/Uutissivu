@@ -10,7 +10,7 @@
       <%- include('saa') %>
       <div class="flex-container">
         <div class="flex-child">
-          Text 1
+          <h2><%= uutisetData[0].otsikko %></h2>
         </div>
         <div class="flex-child">
           Text 2
@@ -19,12 +19,7 @@
           <div content-container>
             <div class="uusimmat">
               <h2 class="otsikko">Uusimmat uutiset</h2>
-              <% for (let i = 0; i < uutiset.length; i++) { %>
-                <div class="uutinen">
-                  <h3><%= uutiset[i].otsikko %></h3>
-                  <p><%= uutiset[i].sisalto %></p>
-                </div>
-              <% } %>
+              Test
             </div>
             <div class="vierailevat">
               <h2 class="otsikko">Vierailevat kirjoittajat</h2>

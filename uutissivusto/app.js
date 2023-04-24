@@ -53,51 +53,54 @@ app.get('/', async (req, res) => {
         tuulennopeus: s.getElementsByTagName('tuulennopeus')[0].textContent
       };
     });
-
-    res.render('main', { saatiedotData });
-    
-  } catch (error) {
-    console.error(error);
-    res.status(500);
-  }
-});
-
-app.get('/', async (req, res) => {
-  try {
-    // Fetch data from database or API
-    const data = await fetch('http://localhost:8080/', {
+    const tarinatData = await fetch('http://localhost:8080/', {
       headers: {
         'Content-Type': 'application/json',
       },
       mode: 'cors'
-    }).then(res => res.json());
-
-    // Map data to desired format
-    const tarinatData = data.map(d => {
-      return {
-        blogi: d.blogi,
-        otsikko: d.otsikko,
-        kirjoittaja: d.kirjoittaja
-      };
+    }).then(res => res.json()).then(data => {
+      return data.map(d => {
+        return {
+          blogi: d.blogi,
+          otsikko: d.otsikko,
+          kirjoittaja: d.kirjoittaja
+        };
+      });
     });
 
-    // Pass data to EJS template
-    res.render('main', { tarinatData });
+    yhteys.query('SELECT * FROM uutiset', (err, results) => {
+      if (err) {
+        throw err;
+      }
+      
+      const uutisetData = results.map(r => {
+        return {
+          id: r.uutinen_id,
+          otsikko: r.otsikko,
+          julkaisuaika: r.julkaisuaika,
+          kirjoittaja: r.kirjoittaja,
+          sisalto: r.sisalto
+        };
+      });
+          
+      console.log(uutisetData);
+      res.render('main', { 
+        saatiedotData: saatiedotData,
+        tarinatData: tarinatData,
+        uutisetData: uutisetData
+      });
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500);
   }
 });
+    
+  
 
-//get the news from the database
-app.get('/', (req, res) => {
-    yhteys.query('SELECT * FROM uutiset', (err, results) => {
-        if (err) {
-            throw err;
-        }
-        res.render('main', { uutiset: results });
-    });
-});
+
+  
 
 
 
