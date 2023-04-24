@@ -21,8 +21,8 @@
 .flex-child {
     flex: 1;
     margin: 0 10px;
-    text-align: center;
     border: solid yellow 2px;
+    padding: 5px;
 }
 
 .paivat {
@@ -46,4 +46,13 @@
 
 #pvm {
     text-align: center;
+}
+
+
+.uusimmat .otsikko {
+    background-color: #ff99ff;
+}
+
+.vierailevat .otsikko {
+    background-color: #ff99ff;
 }

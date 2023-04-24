@@ -16,8 +16,21 @@
           Text 2
         </div>
         <div class="flex-child">
-          Text 3
-          
+          <div content-container>
+            <div class="uusimmat">
+              <h2 class="otsikko">Uusimmat uutiset</h2>
+              <% for (let i = 0; i < uutiset.length; i++) { %>
+                <div class="uutinen">
+                  <h3><%= uutiset[i].otsikko %></h3>
+                  <p><%= uutiset[i].sisalto %></p>
+                </div>
+              <% } %>
+            </div>
+            <div class="vierailevat">
+              <h2 class="otsikko">Vierailevat kirjoittajat</h2>
+              Test
+            </div>
+          </div>
         </div>
       </div>
       

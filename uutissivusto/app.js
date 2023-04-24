@@ -92,7 +92,10 @@ app.get('/', async (req, res) => {
 //get the news from the database
 app.get('/', (req, res) => {
     yhteys.query('SELECT * FROM uutiset', (err, results) => {
-        
+        if (err) {
+            throw err;
+        }
+        res.render('main', { uutiset: results });
     });
 });
 
