@@ -7,3 +7,43 @@
     background-color: #ffcccc;
     text-align: center;
 }
+
+.vko {
+    background-color: #ff99ff;
+    border: 1px solid #cc0099;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-child {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+    border: solid yellow 2px;
+}
+
+.paivat {
+    display: inline-block;
+    border: 2px solid #cc0099;
+    width: 100%;
+}
+
+.paiva {
+    display: block;
+    width: 13.2%;
+    border: 1px solid #cc0099;
+    padding: 5px;
+    float: left;
+    flex-grow: 1;
+}
+
+#lampotila {
+    text-align: center;
+}
+
+#pvm {
+    text-align: center;
+}

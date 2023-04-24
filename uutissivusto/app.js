@@ -2,6 +2,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
+const bodyParser = require('body-parser');
+const { DOMParser } = require('xmldom');
 
 //Luodaan express sovellus
 const app = express();
@@ -23,82 +25,78 @@ app.set('view engine', 'ejs');
 
 app.set('views', path.join(__dirname, 'sivupohjat'));
 
-app.get('/', (req, res) => {
-    res.render('main')
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/saa/:id', async (req, res) => {
+app.use(bodyParser.urlencoded({ extended: true}));
+
+
+app.get('/', async (req, res) => {
   try {
-    const response = await fetch(`http://localhost:8081/saa/${req.params.id}`, {
+    const response = await fetch(`http://localhost:8081/saa/21`, {
       headers: {
         'Content-Type': 'application/xml'
       },
       mode: 'cors'
     });
-
+    
     const data = await response.text();
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(data, 'text/xml');
+    const doc = new DOMParser().parseFromString(data);
 
-    const vko = xmlDoc.getElementsByTagName('vko')[0].childNodes[0].nodeValue;
-    const pvm = new Date(xmlDoc.getElementsByTagName('pvm')[0].childNodes[0].nodeValue).toLocaleDateString('fi-FI');
-    const lampotila = xmlDoc.getElementsByTagName('lampotila')[0].childNodes[0].nodeValue;
-    const tuuli = xmlDoc.getElementsByTagName('tuulennopeus')[0].childNodes[0].nodeValue;
-    const saatila = xmlDoc.getElementsByTagName('saatila')[0].childNodes[0].nodeValue;
-
-    const saaData = {
-      pvm: pvm,
-      lampotila: lampotila,
-      saatila: saatila,
-      tuuli: tuuli
-    };
-
-    const vkoData = {
-      vko: vko 
-    };
-
-    var results = [];
-
-    //add the data to the results array
-    results.push(saaData);
-    results.push(vkoData);
-
-    res.render('saa', { 
-      data: results
+    const saatiedot = doc.getElementsByTagName('saatieto');
+    const saatiedotData = Array.from(saatiedot).map(s => {
+      return {
+        id: s.getElementsByTagName('id')[0].textContent,
+        vko: s.getElementsByTagName('vko')[0].textContent,
+        pvm: s.getElementsByTagName('pvm')[0].textContent,
+        saatila: s.getElementsByTagName('saatila')[0].textContent,
+        lampotila: s.getElementsByTagName('lampotila')[0].textContent,
+        tuulennopeus: s.getElementsByTagName('tuulennopeus')[0].textContent
+      };
     });
+
+    res.render('main', { saatiedotData });
+    
   } catch (error) {
     console.error(error);
     res.status(500);
   }
 });
 
-app.get('/blogit', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
-    const response = await fetch('http://localhost:8080/', {
+    // Fetch data from database or API
+    const data = await fetch('http://localhost:8080/', {
       headers: {
         'Content-Type': 'application/json',
       },
       mode: 'cors'
-    });
+    }).then(res => res.json());
 
-    const data = await response.json();
+    // Map data to desired format
     const tarinatData = data.map(d => {
       return {
-        blogi:d.blogi,
-        otsikko:d.otsikko,
-        kirjoittaja:d.kirjoittaja
+        blogi: d.blogi,
+        otsikko: d.otsikko,
+        kirjoittaja: d.kirjoittaja
       };
     });
-      
-    res.render('blogit', { tarinatData });
+
+    // Pass data to EJS template
+    res.render('main', { tarinatData });
   } catch (error) {
     console.error(error);
     res.status(500);
   }
 });
 
-//määritellään staattisten tiedostojen hakemisto
-app.use(express.static(path.join(__dirname, 'public')));
+//get the news from the database
+app.get('/', (req, res) => {
+    yhteys.query('SELECT * FROM uutiset', (err, results) => {
+        
+    });
+});
+
+
 
 
 //Käynnistetään palvelin
